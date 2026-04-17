@@ -1,5 +1,7 @@
 from dotenv import load_dotenv
 from groq import Groq
+import pandas as pd
+from sklearn.metrics import f1_score, accuracy_score
 
 load_dotenv()
 
@@ -8,7 +10,7 @@ client = Groq()
 
 def zero_shot_predict(text):
     completion = client.chat.completions.create(
-        model="openai/gpt-oss-120b",
+        model="meta-llama/llama-4-scout-17b-16e-instruct",
         messages=[
             {
                 "role": "system",
@@ -39,9 +41,8 @@ def zero_shot_predict(text):
             }
         ],
         temperature=1,
-        max_completion_tokens=8192,
+        max_completion_tokens=1024,
         top_p=1,
-        reasoning_effort="medium",
         stream=False,
         stop=None
     )
@@ -50,7 +51,7 @@ def zero_shot_predict(text):
 
 def few_shot_predict(text):
     completion = client.chat.completions.create(
-        model="openai/gpt-oss-120b",
+        model="meta-llama/llama-4-scout-17b-16e-instruct",
         messages=[
             {
                 "role": "system",
@@ -83,17 +84,40 @@ def few_shot_predict(text):
             {"role": "assistant", "content": "HAPPY"},
             {"role": "user", "content": "این چه وضعشه خدا وکیلی غذا رو نه تنها دیر اوردید بلکه سرد هم بود"},
             {"role": "assistant", "content": "SAD"},
-            {"role": "user", "content": "همیشه زودتر از موعد میرسه واقعا خسته نباشید میگم بهتون"},
-            {"role": "assistant", "content": "HAPPY"},
             {"role": "user", "content": text},
 
         ],
         temperature=1,
-        max_completion_tokens=8192,
+        max_completion_tokens=1024,
         top_p=1,
-        reasoning_effort="medium",
         stream=False,
         stop=None
     )
     return completion.choices[0].message.content.strip()
+
+def evaluate_baseline():
+    df = pd.read_csv("data/splits/test.csv").sample(200, random_state=42)
+    texts = list(df.text)
+    true_labels = list(df.label_id)
+
+    label_map = {"HAPPY": 0, "SAD": 1}
+
+    zero_shot_preds = []
+    few_shot_preds = []
+
+    for text in texts:
+        zero_shot_preds.append(label_map.get(zero_shot_predict(text), 0))
+        few_shot_preds.append(label_map.get(few_shot_predict(text), 0))
+
+    print("Zero-shot:")
+    print(f"  F1: {f1_score(true_labels, zero_shot_preds, average='weighted'):.4f}")
+    print(f"  Accuracy: {accuracy_score(true_labels, zero_shot_preds):.4f}")
+
+    print("Few-shot:")
+    print(f"  F1: {f1_score(true_labels, few_shot_preds, average='weighted'):.4f}")
+    print(f"  Accuracy: {accuracy_score(true_labels, few_shot_preds):.4f}")
+
+
+if __name__ == "__main__":
+    evaluate_baseline()
 
