@@ -18,7 +18,7 @@ A benchmark study comparing LoRA fine-tuning of a Persian-native BERT model agai
 
 ## Dataset
 
-[Snappfood Sentiment Dataset](https://huggingface.co/datasets/HooshvareLab/snappfood) — ~69,000 Persian customer reviews, binary sentiment (HAPPY/SAD), balanced classes.
+[Snappfood Sentiment Dataset](https://www.kaggle.com/datasets/soheiltehranipour/snappfood-persian-sentiment-analysis) — 70,000 Persian customer reviews, binary sentiment (HAPPY/SAD), balanced classes.
 
 ## Tech Stack
 
@@ -64,7 +64,7 @@ persian-sentiment-peft/
 ### Run locally
 
 ```bash
-git clone https://github.com/your-username/persian-sentiment-peft.git
+git clone https://github.com/NaseriM1608/persian-sentiment-peft.git
 cd persian-sentiment-peft
 pip install -r requirements.txt
 uvicorn src.api.main:app --reload
@@ -101,4 +101,4 @@ Fine-tuning was done on Google Colab (T4 GPU) using LoRA with the following conf
 - Learning rate: 2e-4
 - Training time: ~23 minutes
 
-The trained adapter is available on HuggingFace Hub: `your-hf-username/persian-sentiment-lora`
+The trained adapter is available on HuggingFace Hub: `NaseriM/persian-sentiment-lora`
