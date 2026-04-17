@@ -1,3 +1,6 @@
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 from src.training.config import TrainingConfig
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, Trainer, TrainingArguments
 from src.data.dataset import SentimentDataset
@@ -17,7 +20,7 @@ def evaluate():
     model = PeftModel.from_pretrained(base_model, config.output_dir)
 
     training_args = TrainingArguments(
-        output_dir=config.output_dir
+        output_dir="checkpoints/"
     )
 
     trainer = Trainer(

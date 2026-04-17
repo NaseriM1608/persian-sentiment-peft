@@ -1,4 +1,7 @@
-from config import TrainingConfig
+import sys
+import os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
+from src.training.config import TrainingConfig
 from src.data.dataset import SentimentDataset
 from transformers import AutoTokenizer, TrainingArguments, Trainer
 from src.models.lora_model import load_model

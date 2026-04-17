@@ -4,7 +4,7 @@ from sklearn.model_selection import train_test_split
 
 
 def prepare_data():
-    df = pd.read_csv("../data/raw/Snappfood - Sentiment Analysis.csv", sep="\t", on_bad_lines="skip")
+    df = pd.read_csv("data/raw/Snappfood - Sentiment Analysis.csv", sep="\t", on_bad_lines="skip")
     df = df.dropna(subset=["label_id"])
 
     normalizer = Normalizer()
@@ -37,9 +37,9 @@ def prepare_data():
         "label_id": y_test
     })
 
-    train_df.to_csv("../../data/splits/train.csv", index=False)
-    val_df.to_csv("../../data/splits/val.csv", index=False)
-    test_df.to_csv("../../data/splits/test.csv", index=False)
+    train_df.to_csv("data/splits/train.csv", index=False)
+    val_df.to_csv("data/splits/val.csv", index=False)
+    test_df.to_csv("data/splits/test.csv", index=False)
 
 if __name__ == "__main__":
     prepare_data()
