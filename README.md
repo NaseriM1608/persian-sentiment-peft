@@ -30,6 +30,8 @@ A benchmark study comparing LoRA fine-tuning of a Persian-native BERT model agai
 - **Training:** Google Colab (T4 GPU)
 
 ## Project Structure
+
+```
 persian-sentiment-peft/
 ├── data/
 │   ├── raw/                  # Original dataset
@@ -55,6 +57,7 @@ persian-sentiment-peft/
 ├── Dockerfile
 ├── requirements.txt
 └── README.md
+```
 
 ## Setup
 
